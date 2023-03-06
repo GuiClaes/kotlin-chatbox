@@ -15,7 +15,7 @@
     <description>kotlin-chatbox</description>
     <properties>
         <java.version>17</java.version>
-        <kotlin.version>1.7.22</kotlin.version>
+        <kotlin.version>1.7.10</kotlin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -54,6 +54,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <version>1.8.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ninja-squad</groupId>
+            <artifactId>springmockk</artifactId>
+            <version>4.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -65,29 +76,17 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <version>${kotlin.version}</version>
                 <configuration>
-                    <args>
-                        <arg>-Xjsr305=strict</arg>
-                    </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
                         <plugin>jpa</plugin>
-                        <plugin>all-open</plugin>
+                        <plugin>no-arg</plugin>
                     </compilerPlugins>
-                    <pluginOptions>
-                        <option>all-open:annotation=jakarta.persistence.Entity</option>
-                        <option>all-open:annotation=jakarta.persistence.Embeddable</option>
-                        <option>all-open:annotation=jakarta.persistence.MappedSuperclass</option>
-                </pluginOptions>
                 </configuration>
                 <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-allopen</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>
                         <artifactId>kotlin-maven-noarg</artifactId>
