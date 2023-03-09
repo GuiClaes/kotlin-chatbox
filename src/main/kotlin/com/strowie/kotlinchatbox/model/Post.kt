@@ -3,7 +3,6 @@ package com.strowie.kotlinchatbox.model
 import jakarta.persistence.*
 import org.springframework.data.domain.Sort
 import java.time.Instant
-import java.util.*
 
 @Entity
 class Post(
@@ -16,17 +15,20 @@ class Post(
     @Column
     private val emissionDate: Instant,
 
+    @Column
+    private var nbLikes: Int = 0,
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Int? = null,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private val id: String? = null,
 ) {
 
     companion object {
-        val sortByDefault = Sort.by(Sort.Order.desc("emissionDate"))
+        val sortByDefault: Sort = Sort.by(Sort.Order.desc("emissionDate"))
     }
 
-    fun getId(): Int? {
-        return id
+    fun getId(): String {
+        return id ?: "undefined"
     }
 
     fun getSource(): String {
@@ -39,5 +41,14 @@ class Post(
 
     fun getEmissionDate(): Instant {
         return emissionDate
+    }
+
+    fun getNbLikes(): Int {
+        return nbLikes
+    }
+
+    fun addLike(): Post {
+        nbLikes++
+        return this
     }
 }
