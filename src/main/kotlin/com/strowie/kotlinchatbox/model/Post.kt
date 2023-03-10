@@ -13,10 +13,16 @@ class Post(
     private val content: String,
 
     @Column
-    private val emissionDate: Instant,
+    private val emissionDate: Instant = Instant.now(),
 
     @Column
     private var nbLikes: Int = 0,
+
+    @ManyToOne
+    private var parent: Post? = null,
+
+    @OneToMany
+    private val children: MutableList<Post> = mutableListOf(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -48,7 +54,20 @@ class Post(
     }
 
     fun addLike(): Post {
-        nbLikes++
+        this.nbLikes++
+        return this
+    }
+
+    fun getParent(): Post? {
+        return parent
+    }
+
+    fun getChildren(): List<Post> {
+        return children
+    }
+
+    fun addChild(post: Post): Post {
+        children.add(post)
         return this
     }
 }

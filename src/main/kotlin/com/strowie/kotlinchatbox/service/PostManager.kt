@@ -6,7 +6,7 @@ interface PostManager {
 
     fun getPostFeed(): List<Post>
 
-    fun createPost(author: String, content: String): Post
+    fun createPost(author: String, content: String, parent: String?): Post
 
     fun readPost(id: String): Post
 

@@ -26,8 +26,8 @@ class PostController(
 
     @PostMapping("/post")
     fun createPost(@RequestBody creationDto: PostCreationDto): PostDto {
-        val createdPost = postManager.createPost(creationDto.getSource(), creationDto.getContent())
-        return PostDto.from(createdPost)
+        val createdPost = postManager.createPost(creationDto.getSource(), creationDto.getContent(), creationDto.getParent())
+        return postEnricher.enrich(PostDto.from(createdPost))
     }
 
     @GetMapping("/post/{id}")

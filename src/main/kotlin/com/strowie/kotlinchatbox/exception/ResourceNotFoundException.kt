@@ -1,4 +1,4 @@
-package com.strowie.kotlinchatbox.model
+package com.strowie.kotlinchatbox.exception
 
 class ResourceNotFoundException(private val notFoundMessage: String?): RuntimeException() {
 

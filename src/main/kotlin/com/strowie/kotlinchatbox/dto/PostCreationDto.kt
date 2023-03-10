@@ -4,6 +4,7 @@ class PostCreationDto {
 
     private lateinit var source: String
     private lateinit var content: String
+    private var parent: String? = null
 
     fun getSource(): String {
         return source
@@ -20,6 +21,15 @@ class PostCreationDto {
 
     fun setContent(content: String): PostCreationDto {
         this.content = content
+        return this
+    }
+
+    fun getParent(): String? {
+        return parent
+    }
+
+    fun setParent(parent: String?): PostCreationDto {
+        this.parent = parent
         return this
     }
 }

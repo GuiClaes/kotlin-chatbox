@@ -88,6 +88,41 @@ internal class PostControllerTest {
 
     @Test
     @Transactional
+    fun createResponsePost() {
+        val post = Post("Me", "I created my first post")
+        postRepository.save(post)
+
+        val responseDto = PostCreationDto()
+            .setSource("Me")
+            .setContent("This is the first response")
+            .setParent(post.getId())
+
+        mockMvc.perform(MockMvcRequestBuilders
+            .post("/post")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(responseDto)))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.source").value(responseDto.getSource()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content").value(responseDto.getContent()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.responses").isEmpty)
+
+
+        mockMvc.perform(MockMvcRequestBuilders
+            .get("/post/" + post.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(post.getId()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.source").value(post.getSource()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content").value(post.getContent()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.emissionDate").value(post.getEmissionDate().toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.nbLikes").value(post.getNbLikes()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.responses[0]").value("This is the first response"))
+    }
+
+    @Test
+    @Transactional
     fun create_contentMissing() {
         val creationDto = PostCreationDto()
             .setSource("Me")
@@ -121,6 +156,7 @@ internal class PostControllerTest {
     @Test
     @Transactional
     fun readPost() {
+
         val post = Post("Me", "Hello world!", Instant.now())
         postRepository.save(post)
 
@@ -134,8 +170,7 @@ internal class PostControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.content").value(post.getContent()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.emissionDate").value(post.getEmissionDate().toString()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.nbLikes").value(post.getNbLikes()))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.responses[0]").value("First answer ever"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.responses[1]").value("Second one!!"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.responses").isEmpty)
     }
 
     @Test

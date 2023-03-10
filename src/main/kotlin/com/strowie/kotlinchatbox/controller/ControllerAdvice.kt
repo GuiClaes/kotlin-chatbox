@@ -1,6 +1,6 @@
 package com.strowie.kotlinchatbox.controller
 
-import com.strowie.kotlinchatbox.model.ResourceNotFoundException
+import com.strowie.kotlinchatbox.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
